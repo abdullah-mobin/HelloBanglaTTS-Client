@@ -1,5 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import AudioPreviewPanel from "../components/AudioPreviewPanel";
+
 
 import { useEffect, useState } from "react";
 import { Moon, Sun, Lock, Play, Download } from "lucide-react";
@@ -53,6 +55,7 @@ export default function LandingPage() {
               placeholder="এখানে আপনার বাংলা টেক্সট লিখুন..."
               className="w-full h-64 p-4 rounded-xl border bg-white dark:bg-gray-900 resize-none focus:ring-2 focus:ring-indigo-500"
             />
+            <AudioPreviewPanel audioUrl={audioUrl} />
           </div>
 
           {/* OPTIONS */}

@@ -13,26 +13,29 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link
+        {/* <Link
           to="/"
           className="text-2xl font-bold text-indigo-600 dark:text-indigo-400"
         >
           helloBanglaTTS
-        </Link>
+        </Link> */}
 
         {/* Nav links */}
         <div className="hidden md:flex items-center gap-6 font-medium">
-          <Link to="/about" className="hover:text-indigo-500">
-            About
-          </Link>
-          <Link to="/career" className="hover:text-indigo-500">
-            Career
+          <Link to="/" className="hover:text-indigo-500">
+            Home
           </Link>
           <Link to="/pricing" className="hover:text-indigo-500">
             Pricing
           </Link>
           <Link to="/blog" className="hover:text-indigo-500">
             Blog
+          </Link>
+          <Link to="/about" className="hover:text-indigo-500">
+            About
+          </Link>
+          <Link to="/career" className="hover:text-indigo-500">
+            Career
           </Link>
         </div>
 
