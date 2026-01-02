@@ -9,6 +9,7 @@ import Blog from "./pages/Blog";
 
 import LeftPanel from "./components/LeftPanel";
 
+import TextToSpeech from "./pages/modules/TextToSpeech";
 import VideoGen from "./pages/modules/VideoGen";
 import ImageGen from "./pages/modules/ImageGen";
 import StoryGen from "./pages/modules/StoryGen";
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/career" element={<Careers />} />
             <Route path="/blog" element={<Blog />} />
 
+            <Route path="/modules/tts" element={<TextToSpeech />} />
             <Route path="/modules/video" element={<VideoGen />} />
             <Route path="/modules/image" element={<ImageGen />} />
             <Route path="/modules/story" element={<StoryGen />} />

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 const items = [
-  { to: "/", label: "Text to Speech", icon: Mic },
+  { to: "/modules/tts", label: "Text to Speech", icon: Mic },
   { to: "/modules/video", label: "Bangla Text to Video", icon: Video },
   { to: "/modules/image", label: "Bangla Text to Image", icon: Image },
   { to: "/modules/story", label: "Story Generator", icon: BookOpen },

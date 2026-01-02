@@ -1,122 +1,104 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import AudioPreviewPanel from "../components/AudioPreviewPanel";
+'use client';
 
+import { Mic, Video, Image, BookOpen, Languages, Sparkles, UserCheck, ArrowRight } from 'lucide-react';
 
-import { useEffect, useState } from "react";
-import { Moon, Sun, Lock, Play, Download } from "lucide-react";
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000/tts";
+const items = [
+  { to: "/modules/tts", label: "Text to Speech", icon: Mic },
+  { to: "/modules/video", label: "Bangla Text to Video", icon: Video },
+  { to: "/modules/image", label: "Bangla Text to Image", icon: Image },
+  { to: "/modules/story", label: "Story Generator", icon: BookOpen },
+  { to: "/modules/accent", label: "Regional Accent", icon: Languages },
+  { to: "/modules/smartify", label: "Smartify Text", icon: Sparkles },
+  { to: "/modules/humanize", label: "AI Humanizer", icon: UserCheck },
+];
 
-export default function LandingPage() {
-  const [dark, setDark] = useState(false);
-  const [text, setText] = useState("");
-  const [actor, setActor] = useState("free_male");
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [format, setFormat] = useState("mp3");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
-
-  const generateAudio = async () => {
-    setLoading(true);
-    setAudioUrl(null);
-    try {
-      const res = await fetch(BACKEND_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, actor, format }),
-      });
-      const blob = await res.blob();
-      setAudioUrl(URL.createObjectURL(blob));
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function Landing() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 flex flex-col">
-      {/* NAVBAR */}
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* MAIN */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* TEXT INPUT */}
-          <div className="lg:col-span-2">
-            <h1 className="text-3xl font-semibold mb-4">Bangla Text to Speech</h1>
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="এখানে আপনার বাংলা টেক্সট লিখুন..."
-              className="w-full h-64 p-4 rounded-xl border bg-white dark:bg-gray-900 resize-none focus:ring-2 focus:ring-indigo-500"
-            />
-            <AudioPreviewPanel audioUrl={audioUrl} />
-          </div>
-
-          {/* OPTIONS */}
-          <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm flex flex-col gap-6">
-            <div>
-              <label className="font-medium">Select Actor</label>
-              <select
-                value={actor}
-                onChange={(e) => setActor(e.target.value)}
-                className="mt-2 w-full p-3 rounded-lg border bg-transparent"
-              >
-                <option value="free_male">Free Male</option>
-                <option value="free_female">Free Female</option>
-                <option disabled>──────────</option>
-                <option disabled>Premium Actor 1 🔒</option>
-                <option disabled>Premium Actor 2 🔒</option>
-              </select>
-              <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
-                <Lock size={12} /> Premium voices require signup
-              </p>
-            </div>
-
-            <div>
-              <label className="font-medium">Download Format</label>
-              <select
-                value={format}
-                onChange={(e) => setFormat(e.target.value)}
-                className="mt-2 w-full p-3 rounded-lg border bg-transparent"
-              >
-                <option value="mp3">MP3</option>
-                <option value="wav">WAV</option>
-                <option value="m4a">M4A</option>
-              </select>
-            </div>
-
-            <button
-              disabled={loading || !text}
-              onClick={generateAudio}
-              className="mt-auto bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white py-3 rounded-xl font-semibold"
-            >
-              {loading ? "Generating…" : "Generate Audio"}
-            </button>
-
-            {audioUrl && (
-              <div className="border-t pt-4 flex flex-col gap-3">
-                <audio controls src={audioUrl} className="w-full" />
-                <a
-                  href={audioUrl}
-                  download={`tts.${format}`}
-                  className="flex items-center justify-center gap-2 border rounded-lg py-2 hover:bg-gray-50 dark:hover:bg-gray-800"
-                >
-                  <Download size={16} /> Download
-                </a>
-              </div>
-            )}
+      {/* Optional CTA Section */}
+        <div className="mt-20 text-center">
+          <h3 className="text-2xl md:text-4xl font-bold text-gray-900 mb-6">
+            Ready to give your Bangla content a voice?
+          </h3>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/modules/tts">
+              <button  className="rounded-2xl h-14 px-8 shadow-lg bg-blue-600 text-white hover:bg-blue-700">
+                Try TTS Now
+              </button>
+            </Link>
+            <Link to="/signup">
+              <button  className="rounded-2xl h-14 px-8 text-blue-600 border-2 border-blue-200 hover:bg-blue-50">
+                Get Started
+              </button>
+            </Link>
           </div>
         </div>
+
+      {/* Features Section */}
+      <main className="flex-1 py-16 md:py-24">
+        <div className="container px-4 md:px-6 mx-auto">
+
+
+          <div className="grid gap-6 md:gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map(({ to, label, icon: Icon }, idx) => (
+              <FeatureCard
+                key={idx}
+                to={to}
+                title={label}
+                icon={<Icon className="h-6 w-6 md:h-7 md:w-7" />}
+                color={getColor(idx)}
+              />
+            ))}
+          </div>
+            <div className="text-center mb-12 md:mb-16 space-y-2">
+            <p className="text-gray-600 font-medium text-base md:text-lg max-w-2xl mx-auto">
+              Convert Bangla text to speech, videos, images, and more — smartly and effortlessly.
+            </p>
+          </div>
+        </div>
+
+        
+
       </main>
 
-      {/* FOOTER */}
       <Footer />
     </div>
   );
+}
+
+// --- Helper Feature Card Component ---
+function FeatureCard({ to, icon, title, color }: { to: string; icon: React.ReactNode; title: string; color: string }) {
+  const colorMap: Record<string, string> = {
+    blue: 'bg-blue-50 text-blue-600 border-blue-100 group-hover:bg-blue-600',
+    indigo: 'bg-indigo-50 text-indigo-600 border-indigo-100 group-hover:bg-indigo-600',
+    green: 'bg-green-50 text-green-600 border-green-100 group-hover:bg-green-600',
+    orange: 'bg-orange-50 text-orange-600 border-orange-100 group-hover:bg-orange-600',
+    purple: 'bg-purple-50 text-purple-600 border-purple-100 group-hover:bg-purple-600',
+    rose: 'bg-rose-50 text-rose-600 border-rose-100 group-hover:bg-rose-600',
+    teal: 'bg-teal-50 text-teal-600 border-teal-100 group-hover:bg-teal-600',
+  };
+
+  return (
+    <div className="group flex flex-col items-center space-y-4 p-6 rounded-[24px] border border-gray-100 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+      <div className={`p-3 md:p-4 rounded-2xl transition-all duration-300 group-hover:text-white group-hover:scale-110 ${colorMap[color]}`}>
+        {icon}
+      </div>
+      <h3 className="text-xl md:text-2xl font-black text-gray-900 tracking-tight text-center">{title}</h3>
+      <Link to={to} className="text-blue-600 font-bold text-sm md:text-base uppercase tracking-widest inline-flex items-center gap-1">
+        Explore <ArrowRight className="h-4 w-4" />
+      </Link>
+    </div>
+  );
+}
+
+// --- Simple function to assign colors cyclically ---
+function getColor(idx: number) {
+  const colors = ['blue', 'indigo', 'green', 'orange', 'purple', 'rose', 'teal'];
+  return colors[idx % colors.length];
 }
