@@ -25,7 +25,7 @@ export default function ImageGen() {
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
         <h1 className="text-3xl font-semibold mb-2">
-          Bangla Image AI
+          Bangla Text to Image AI
         </h1>
         <p className="text-gray-500 mb-8">
           Generate stunning AI images using Bangla text prompts.

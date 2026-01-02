@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Sparkles } from "lucide-react";
 
 export default function Navbar() {
   const [dark, setDark] = useState(false);
@@ -11,35 +11,36 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        {/* <Link
-          to="/"
-          className="text-2xl font-bold text-indigo-600 dark:text-indigo-400"
-        >
-          helloBanglaTTS
-        </Link> */}
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative">
 
-        {/* Nav links */}
+        {/* Left Links */}
         <div className="hidden md:flex items-center gap-6 font-medium">
-          <Link to="/" className="hover:text-indigo-500">
-            Home
-          </Link>
-          <Link to="/pricing" className="hover:text-indigo-500">
-            Pricing
-          </Link>
-          <Link to="/blog" className="hover:text-indigo-500">
-            Blog
-          </Link>
-          <Link to="/about" className="hover:text-indigo-500">
-            About
-          </Link>
-          <Link to="/career" className="hover:text-indigo-500">
-            Career
+          <Link to="/" className="hover:text-indigo-500">Home</Link>
+          <Link to="/pricing" className="hover:text-indigo-500">Pricing</Link>
+          <Link to="/blog" className="hover:text-indigo-500">Blog</Link>
+          <Link to="/about" className="hover:text-indigo-500">About</Link>
+          <Link to="/career" className="hover:text-indigo-500">Career</Link>
+        </div>
+
+        {/* 🔥 Center Upgrade Button */}
+        <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
+          <Link
+            to="/pricing"
+            className="relative inline-flex items-center gap-2 px-6 py-2 rounded-full
+                       bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+                       text-white font-semibold shadow-lg
+                       hover:scale-105 transition-transform duration-300"
+          >
+            {/* Glow Ring */}
+            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-400 to-pink-500
+                             blur-md opacity-60 animate-pulse -z-10" />
+
+            <Sparkles size={16} />
+            Upgrade to Pro
           </Link>
         </div>
 
-        {/* Actions */}
+        {/* Right Actions */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setDark(!dark)}

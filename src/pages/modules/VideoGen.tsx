@@ -23,7 +23,7 @@ export default function VideoGen() {
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
         <h1 className="text-3xl font-semibold mb-2">
-          Bangla Video AI
+          Bangla Text to Video AI
         </h1>
         <p className="text-gray-500 mb-8">
           Generate AI-powered videos from Bangla text prompts.
