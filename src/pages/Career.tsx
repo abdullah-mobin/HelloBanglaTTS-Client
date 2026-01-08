@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const openings = [
@@ -21,8 +20,7 @@ const openings = [
 
 export default function Careers() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50 to-sky-50 text-gray-900">
 
       <main className="flex-1 max-w-5xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold mb-6">Careers</h1>

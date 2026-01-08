@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const plans = [
@@ -44,8 +43,7 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50 to-sky-50 text-gray-900">
 
       <main className="flex-1 px-6 py-16 max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-4">

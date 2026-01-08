@@ -1,19 +1,40 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Signup() {
+  const { register, googleLogin } = useAuth();
+  const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
-  const handleGoogleSuccess = (credentialResponse: any) => {
-    console.log("Google Token:", credentialResponse.credential);
-    // send token to backend
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordValid && passwordsMatch) {
+      try {
+        await register(name, email, password);
+        navigate("/");
+      } catch (err) {
+        setError("Registration failed. Please try again.");
+      }
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    try {
+      await googleLogin(credentialResponse.credential);
+      navigate("/");
+    } catch (err) {
+      setError("Google login failed. Please try again.");
+    }
   };
 
   // Simple password validation
@@ -21,8 +42,7 @@ export default function Signup() {
   const passwordsMatch = password === confirm;
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50 to-sky-50 text-gray-900">
 
       <main className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white dark:bg-gray-900 p-8 rounded-2xl shadow">
@@ -30,17 +50,25 @@ export default function Signup() {
             Create an Account
           </h1>
 
-          <form className="space-y-4">
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
               placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full p-3 rounded-lg border dark:bg-gray-800"
+              required
             />
 
             <input
               type="email"
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full p-3 rounded-lg border dark:bg-gray-800"
+              required
             />
 
             {/* Password with toggle */}

@@ -1,25 +1,45 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { Video, Play, Lock } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function VideoGen() {
+  const { accessToken } = useAuth();
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setLoading(true);
+    setError("");
+    setSuccess("");
+    try {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
+      }
+      const res = await fetch(`${BACKEND_URL}generate/video`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ text: prompt }),
+      });
 
-    // backend hook will go here
-    setTimeout(() => {
+      if (!res.ok) throw new Error("Failed to generate video");
+      setSuccess("Video generation started! Check back soon.");
+      setPrompt("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error generating video");
+      console.error(err);
+    } finally {
       setLoading(false);
-      alert("Video generation API will be connected here");
-    }, 1200);
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50 to-sky-50 text-gray-900">
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
         <h1 className="text-3xl font-semibold mb-2">
@@ -56,6 +76,18 @@ export default function VideoGen() {
               <Lock size={12} />
               Video generation may require credits
             </p>
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mt-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
           </div>
 
           {/* RIGHT: PREVIEW */}

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import LandingPage from "./pages/Landing";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -6,8 +6,10 @@ import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import Careers from "./pages/Career";
 import Blog from "./pages/Blog";
+import Support from "./pages/Support";
 
 import LeftPanel from "./components/LeftPanel";
+import Navbar from "./components/Navbar";
 
 import TextToSpeech from "./pages/modules/TextToSpeech";
 import VideoGen from "./pages/modules/VideoGen";
@@ -17,13 +19,21 @@ import AccentTranslate from "./pages/modules/AccentTranslate";
 import SmartifyText from "./pages/modules/SmartifyText";
 import Humanizer from "./pages/modules/Humanizer";
 
-export default function App() {
-  return (
-    <BrowserRouter>
-      <div className="flex">
-        <LeftPanel />
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
-        <div className="flex-1">
+function AppContent() {
+  const location = useLocation();
+  const isModulePage = location.pathname.startsWith('/modules');
+  const { isLoggedIn } = useAuth();
+
+  return (
+    <div className="flex">
+      {isLoggedIn && <LeftPanel isLoggedIn={isLoggedIn} />}
+
+      <div className={`flex-1 flex flex-col ${isLoggedIn ? 'md:ml-64 ml-0' : 'ml-0'}`}>
+        <Navbar isModulePage={isModulePage} />
+
+        <div className="flex-1 pt-16">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/signup" element={<Signup />} />
@@ -32,18 +42,29 @@ export default function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/career" element={<Careers />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/support" element={<Support />} />
 
             <Route path="/modules/tts" element={<TextToSpeech />} />
-            <Route path="/modules/video" element={<VideoGen />} />
-            <Route path="/modules/image" element={<ImageGen />} />
-            <Route path="/modules/story" element={<StoryGen />} />
-            <Route path="/modules/accent" element={<AccentTranslate />} />
-            <Route path="/modules/smartify" element={<SmartifyText />} />
-            <Route path="/modules/humanize" element={<Humanizer />} />
+            <Route path="/modules/video" element={isLoggedIn ? <VideoGen /> : <Navigate to="/" />} />
+            <Route path="/modules/image" element={isLoggedIn ? <ImageGen /> : <Navigate to="/" />} />
+            <Route path="/modules/story" element={isLoggedIn ? <StoryGen /> : <Navigate to="/" />} />
+            <Route path="/modules/accent" element={isLoggedIn ? <AccentTranslate /> : <Navigate to="/" />} />
+            <Route path="/modules/smartify" element={isLoggedIn ? <SmartifyText /> : <Navigate to="/" />} />
+            <Route path="/modules/humanize" element={isLoggedIn ? <Humanizer /> : <Navigate to="/" />} />
           </Routes>
         </div>
-
       </div>
-    </BrowserRouter>
+
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

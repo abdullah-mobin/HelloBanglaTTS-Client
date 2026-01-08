@@ -1,57 +1,50 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { BookOpen, Loader2, Download } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
-const HF_API_URL =
-  "https://api-inference.huggingface.co/models/bigscience/bloom-560m";
-
-const HF_TOKEN = import.meta.env.VITE_HF_TOKEN;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function StoryGen() {
+  const { accessToken } = useAuth();
   const [prompt, setPrompt] = useState("");
   const [story, setStory] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const generateStory = async () => {
     setLoading(true);
     setStory("");
+    setError("");
+    setSuccess("");
 
     try {
-      const res = await fetch(HF_API_URL, {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
+      }
+      const res = await fetch(`${BACKEND_URL}generate/story`, {
         method: "POST",
-        headers: {
-          "Authorization": `Bearer ${HF_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inputs: `একটি সুন্দর বাংলা গল্প লিখো:\n${prompt}`,
-          parameters: {
-            max_new_tokens: 300,
-            temperature: 0.8,
-            top_p: 0.9,
-          },
-        }),
+        headers,
+        body: JSON.stringify({ text: prompt }),
       });
 
+      if (!res.ok) throw new Error("Failed to generate story");
       const data = await res.json();
-
-      if (Array.isArray(data)) {
-        setStory(data[0].generated_text);
-      } else {
-        setStory("গল্প তৈরি করা যায়নি। আবার চেষ্টা করুন।");
-      }
+      setStory(data.data.story || data.story);
+      setSuccess("Story generated successfully!");
+      setPrompt("");
     } catch (err) {
+      setError(err instanceof Error ? err.message : "Error generating story");
       console.error(err);
-      setStory("কিছু একটা সমস্যা হয়েছে।");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50 to-sky-50 text-gray-900">
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
         <h1 className="text-3xl font-semibold mb-2">
@@ -92,6 +85,18 @@ export default function StoryGen() {
                 </>
               )}
             </button>
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mt-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
           </div>
 
           {/* RIGHT */}

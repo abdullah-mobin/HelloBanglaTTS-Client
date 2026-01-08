@@ -1,57 +1,50 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { Sparkles, Loader2, Download } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
-const HF_API_URL =
-  "https://api-inference.huggingface.co/models/bigscience/bloom-560m";
-
-const HF_TOKEN = import.meta.env.VITE_HF_TOKEN;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function SmartifyText() {
+  const { accessToken } = useAuth();
   const [text, setText] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const smartify = async () => {
     setLoading(true);
     setResult("");
+    setError("");
+    setSuccess("");
 
     try {
-      const res = await fetch(HF_API_URL, {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (accessToken) {
+        headers["Authorization"] = `Bearer ${accessToken}`;
+      }
+      const res = await fetch(`${BACKEND_URL}generate/smartify`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${HF_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inputs: `নিচের বাংলা লেখাটিকে আরও স্মার্ট, পরিষ্কার এবং প্রফেশনাল করে লেখো:\n\n${text}`,
-          parameters: {
-            max_new_tokens: 200,
-            temperature: 0.7,
-            top_p: 0.9,
-          },
-        }),
+        headers,
+        body: JSON.stringify({ text }),
       });
 
+      if (!res.ok) throw new Error("Failed to smartify text");
       const data = await res.json();
-
-      if (Array.isArray(data)) {
-        setResult(data[0].generated_text);
-      } else {
-        setResult("টেক্সট উন্নত করা যায়নি। আবার চেষ্টা করুন।");
-      }
+      setResult(data.data.smartified || data.smartified);
+      setSuccess("Text smartified successfully!");
+      setText("");
     } catch (err) {
+      setError(err instanceof Error ? err.message : "Error smartifying text");
       console.error(err);
-      setResult("কিছু একটা সমস্যা হয়েছে।");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50 to-sky-50 text-gray-900">
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
         <h1 className="text-3xl font-semibold mb-2">
@@ -92,6 +85,18 @@ export default function SmartifyText() {
                 </>
               )}
             </button>
+
+            {error && (
+              <div className="mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mt-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
+                {success}
+              </div>
+            )}
           </div>
 
           {/* RIGHT */}

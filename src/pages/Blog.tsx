@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 type BlogPost = {
@@ -45,8 +44,7 @@ export default function Blog() {
   const [selected, setSelected] = useState<BlogPost | null>(null);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white via-indigo-50 to-sky-50 text-gray-900">
 
       <main className="flex-1 max-w-7xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold text-center mb-10">Blog</h1>
