@@ -9,7 +9,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function TextToSpeech() {
   const { accessToken } = useAuth();
-  const [dark, setDark] = useState(false);
+  const [dark] = useState(false);
   const [text, setText] = useState("");
   const [actor, setActor] = useState("free_male");
   const [audioUrl, setAudioUrl] = useState<string | null>(null);

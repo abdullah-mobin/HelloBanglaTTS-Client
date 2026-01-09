@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Moon, Sun, Sparkles, Menu, X, User, LogOut, Mail, Calendar } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
-export default function Navbar({ isModulePage }: { isModulePage: boolean }) {
+export default function Navbar({ }: { isModulePage: boolean }) {
   const { isLoggedIn, userProfile, fetchUserProfile, logout } = useAuth();
   const [dark, setDark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
