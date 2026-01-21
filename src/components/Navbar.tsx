@@ -91,13 +91,13 @@ export default function Navbar({ }: { isModulePage: boolean }) {
 
         {/* Right Actions */}
         <div className="flex items-center gap-4">
-          <button
+          {/* <button
             onClick={() => setDark(!dark)}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
             aria-label="Toggle dark mode"
           >
             {dark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          </button> */}
 
           {isLoggedIn ? (
             <div className="relative" ref={profileMenuRef}>
