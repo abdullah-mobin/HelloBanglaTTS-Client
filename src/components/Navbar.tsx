@@ -1,11 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Moon, Sun, Sparkles, Menu, X, User, LogOut, Mail, Calendar } from "lucide-react";
+// import { Moon, Sun, Sparkles, Menu, X, User, LogOut, Mail, Calendar } from "lucide-react";
+import { Sparkles, Menu, X, User, LogOut, Mail, Calendar } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Navbar({ }: { isModulePage: boolean }) {
   const { isLoggedIn, userProfile, fetchUserProfile, logout } = useAuth();
-  const [dark, setDark] = useState(false);
+  // const [dark, setDark] = useState(false);
+  const [dark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileFetchedRef = useRef(false);
