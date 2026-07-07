@@ -27,7 +27,7 @@ export default function StoryGen() {
       const res = await fetch(`${BACKEND_URL}generate/story`, {
         method: "POST",
         headers,
-        body: JSON.stringify({ text: prompt }),
+        body: JSON.stringify({ prompt: prompt }),
       });
 
       if (!res.ok) throw new Error("Failed to generate story");

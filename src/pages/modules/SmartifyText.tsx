@@ -32,7 +32,7 @@ export default function SmartifyText() {
 
       if (!res.ok) throw new Error("Failed to smartify text");
       const data = await res.json();
-      setResult(data.data.smartified || data.smartified);
+      setResult(data.data.rewritten || data.rewritten);
       setSuccess("Text smartified successfully!");
       setText("");
     } catch (err) {

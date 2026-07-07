@@ -32,7 +32,7 @@ export default function Humanizer() {
 
       if (!res.ok) throw new Error("Failed to humanize text");
       const data = await res.json();
-      setResult(data.data.humanized || data.humanized);
+      setResult(data.data.rewritten || data.rewritten);
       setSuccess("Text humanized successfully!");
       setText("");
     } catch (err) {

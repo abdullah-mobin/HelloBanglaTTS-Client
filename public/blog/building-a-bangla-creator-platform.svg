@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="50%" stop-color="#f43f5e"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#g)"/>
+  <g transform="translate(180 160)">
+    <rect x="0" y="0" width="220" height="280" rx="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" stroke-width="3"/>
+    <polygon points="100,110 100,170 145,140" fill="rgba(255,255,255,0.95)"/>
+    <text x="14" y="240" font-family="system-ui, sans-serif" font-size="16" fill="rgba(255,255,255,0.95)" font-weight="700">YouTube channel</text>
+    <text x="14" y="262" font-family="system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.75)">Daily Bangla literature</text>
+  </g>
+  <g transform="translate(490 130)">
+    <rect x="0" y="0" width="220" height="340" rx="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" stroke-width="3"/>
+    <circle cx="110" cy="120" r="40" fill="rgba(255,255,255,0.95)"/>
+    <text x="110" y="128" text-anchor="middle" font-family="system-ui, sans-serif" font-size="34" fill="#ec4899" font-weight="800">▶</text>
+    <text x="14" y="240" font-family="system-ui, sans-serif" font-size="16" fill="rgba(255,255,255,0.95)" font-weight="700">Audiobook</text>
+    <text x="14" y="262" font-family="system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.75)">Chittagonian stories</text>
+    <text x="14" y="290" font-family="system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.75)">Priya · Chittagong</text>
+  </g>
+  <g transform="translate(800 160)">
+    <rect x="0" y="0" width="220" height="280" rx="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.6)" stroke-width="3"/>
+    <g fill="rgba(255,255,255,0.95)">
+      <circle cx="40" cy="60" r="14"/>
+      <circle cx="78" cy="60" r="14"/>
+      <circle cx="116" cy="60" r="14"/>
+      <circle cx="154" cy="60" r="14"/>
+    </g>
+    <rect x="14" y="90" width="192" height="6" rx="3" fill="rgba(255,255,255,0.7)"/>
+    <text x="14" y="140" font-family="system-ui, sans-serif" font-size="40" font-weight="800" fill="rgba(255,255,255,0.95)">14 min</text>
+    <text x="14" y="180" font-family="system-ui, sans-serif" font-size="14" fill="rgba(255,255,255,0.85)">/ episode</text>
+    <text x="14" y="240" font-family="system-ui, sans-serif" font-size="16" fill="rgba(255,255,255,0.95)" font-weight="700">Daily Podcast</text>
+    <text x="14" y="262" font-family="system-ui, sans-serif" font-size="13" fill="rgba(255,255,255,0.75)">Daily Bangladesh</text>
+  </g>
+  <text x="60" y="80" font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="rgba(255,255,255,0.9)">Creator Stories · 3 Cities</text>
+</svg>

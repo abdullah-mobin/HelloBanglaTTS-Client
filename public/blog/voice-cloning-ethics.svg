@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="50%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#g)"/>
+  <g transform="translate(420 120)">
+    <path d="M180 0 L360 70 L360 270 L180 340 L0 270 L0 70 Z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.85)" stroke-width="4"/>
+    <g transform="translate(180 170)" fill="rgba(255,255,255,0.95)">
+      <path d="M-30 -40 L30 -40 L30 -10 C30 22 0 40 -30 40 C-60 40 -90 22 -90 -10 L-90 -40 L-60 -40 L-60 -10 C-60 8 -45 18 -30 18 C-15 18 0 8 0 -10 Z"/>
+      <path d="M-50 -50 L-30 -60 M-10 -55 L10 -65 M30 -50 L50 -60" stroke="rgba(255,255,255,0.9)" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </g>
+  <g stroke="rgba(255,255,255,0.7)" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M120 480 L180 460 L240 490 L300 450 L360 480"/>
+    <path d="M840 460 L900 480 L960 450 L1020 480 L1080 460"/>
+  </g>
+  <g fill="rgba(255,255,255,0.85)">
+    <circle cx="120" cy="480" r="10"/>
+    <circle cx="1080" cy="460" r="10"/>
+  </g>
+  <text x="60" y="80" font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="rgba(255,255,255,0.9)">Voice Cloning Ethics · Consent Framework</text>
+</svg>

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import LandingPage from "./pages/Landing";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -8,7 +9,10 @@ import Careers from "./pages/Career";
 import Blog from "./pages/Blog";
 import Support from "./pages/Support";
 
-import LeftPanel from "./components/LeftPanel";
+import LeftPanel, {
+  LEFT_PANEL_WIDTH_COLLAPSED,
+  LEFT_PANEL_WIDTH_EXPANDED,
+} from "./components/LeftPanel";
 import Navbar from "./components/Navbar";
 
 import TextToSpeech from "./pages/modules/TextToSpeech";
@@ -21,17 +25,50 @@ import Humanizer from "./pages/modules/Humanizer";
 
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
+const SIDEBAR_COLLAPSED_KEY = "leftPanelCollapsed";
+
 function AppContent() {
   const location = useLocation();
-  const isModulePage = location.pathname.startsWith('/modules');
+  const isModulePage = location.pathname.startsWith("/modules");
   const { isLoggedIn } = useAuth();
+
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(SIDEBAR_COLLAPSED_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, String(collapsed));
+    } catch {
+      /* ignore quota / private mode */
+    }
+  }, [collapsed]);
+
+  const sidebarWidth = isLoggedIn
+    ? collapsed
+      ? LEFT_PANEL_WIDTH_COLLAPSED
+      : LEFT_PANEL_WIDTH_EXPANDED
+    : 0;
 
   return (
     <div className="flex">
-      {isLoggedIn && <LeftPanel isLoggedIn={isLoggedIn} />}
+      {isLoggedIn && (
+        <LeftPanel
+          isLoggedIn={isLoggedIn}
+          collapsed={collapsed}
+          onToggle={() => setCollapsed((c) => !c)}
+        />
+      )}
 
-      <div className={`flex-1 flex flex-col ${isLoggedIn ? 'md:ml-64 ml-0' : 'ml-0'}`}>
-        <Navbar isModulePage={isModulePage} />
+      <div
+        className="flex-1 flex flex-col ml-0 transition-[margin] duration-300 ease-in-out"
+        style={{ marginLeft: `${sidebarWidth}rem` }}
+      >
+        <Navbar isModulePage={isModulePage} sidebarWidth={sidebarWidth} />
 
         <div className="flex-1 pt-16">
           <Routes>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.6" fill="rgba(255,255,255,0.18)"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="600" fill="url(#g)"/>
+  <rect width="1200" height="600" fill="url(#dots)"/>
+  <g stroke="rgba(255,255,255,0.35)" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M120 380 Q160 320 200 380 T280 380 T360 380 T440 380 T520 380 T600 380 T680 380 T760 380 T840 380 T920 380 T1000 380 T1080 380"/>
+    <path d="M120 410 Q160 360 200 410 T280 410 T360 410 T440 410 T520 410 T600 410 T680 410 T760 410 T840 410 T920 410 T1000 410 T1080 410"/>
+    <path d="M120 440 Q160 470 200 440 T280 440 T360 440 T440 440 T520 440 T600 440 T680 440 T760 440 T840 440 T920 440 T1000 440 T1080 440"/>
+  </g>
+  <g fill="rgba(255,255,255,0.85)">
+    <circle cx="600" cy="200" r="42"/>
+    <rect x="588" y="170" width="24" height="60" rx="12" fill="#4338ca"/>
+  </g>
+  <text x="60" y="80" font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="rgba(255,255,255,0.9)">helloBanglaTTS · Announcement</text>
+</svg>

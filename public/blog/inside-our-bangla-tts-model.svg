@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="50%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#g)"/>
+  <g stroke="rgba(255,255,255,0.35)" stroke-width="2" fill="none">
+    <line x1="100" y1="120" x2="1100" y2="120"/>
+    <line x1="100" y1="240" x2="1100" y2="240"/>
+    <line x1="100" y1="360" x2="1100" y2="360"/>
+    <line x1="100" y1="480" x2="1100" y2="480"/>
+    <line x1="100" y1="100" x2="100" y2="500"/>
+    <line x1="1100" y1="100" x2="1100" y2="500"/>
+  </g>
+  <g fill="rgba(255,255,255,0.9)">
+    <circle cx="220" cy="180" r="14"/>
+    <circle cx="340" cy="180" r="14"/>
+    <circle cx="460" cy="180" r="14"/>
+    <circle cx="580" cy="180" r="14"/>
+    <circle cx="700" cy="180" r="14"/>
+    <circle cx="820" cy="180" r="14"/>
+    <circle cx="940" cy="180" r="14"/>
+  </g>
+  <g stroke="rgba(255,255,255,0.6)" stroke-width="2">
+    <line x1="220" y1="194" x2="340" y2="194"/>
+    <line x1="340" y1="194" x2="460" y2="194"/>
+    <line x1="460" y1="194" x2="580" y2="194"/>
+    <line x1="580" y1="194" x2="700" y2="194"/>
+    <line x1="700" y1="194" x2="820" y2="194"/>
+    <line x1="820" y1="194" x2="940" y2="194"/>
+  </g>
+  <g fill="rgba(255,255,255,0.85)">
+    <circle cx="220" cy="300" r="18"/>
+    <circle cx="340" cy="300" r="18"/>
+    <circle cx="460" cy="300" r="18"/>
+    <circle cx="580" cy="300" r="18"/>
+    <circle cx="700" cy="300" r="18"/>
+    <circle cx="820" cy="300" r="18"/>
+    <circle cx="940" cy="300" r="18"/>
+  </g>
+  <g stroke="rgba(255,255,255,0.45)" stroke-width="1.5">
+    <line x1="220" y1="318" x2="340" y2="318"/>
+    <line x1="340" y1="318" x2="460" y2="318"/>
+    <line x1="460" y1="318" x2="580" y2="318"/>
+    <line x1="580" y1="318" x2="700" y2="318"/>
+    <line x1="700" y1="318" x2="820" y2="318"/>
+    <line x1="820" y1="318" x2="940" y2="318"/>
+  </g>
+  <g stroke="rgba(255,255,255,0.7)" stroke-width="2" fill="none">
+    <path d="M150 420 L200 380 L260 440 L320 360 L380 420 L440 320 L500 400 L560 340 L620 420 L680 360 L740 440 L800 380 L860 460 L920 380 L980 440 L1040 400"/>
+  </g>
+  <text x="60" y="80" font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="rgba(255,255,255,0.9)">Model Architecture · 600ms Pipeline</text>
+</svg>

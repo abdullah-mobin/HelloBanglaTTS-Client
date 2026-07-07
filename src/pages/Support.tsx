@@ -2,21 +2,26 @@
 
 import Footer from '../components/Footer';
 import { useState } from 'react';
+import { openMailClient, CONTACT_EMAIL } from '../services/mailService';
 
 export default function Support() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [details, setDetails] = useState('');
-  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: integrate backend API here
-    console.log({ name, email, details });
-    setSubmitted(true);
-    setName('');
-    setEmail('');
-    setDetails('');
+
+    const subject = `Support request from ${name}`;
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      '',
+      'Message:',
+      details,
+    ].join('\n');
+
+    openMailClient({ subject, body });
   };
 
   return (
@@ -28,19 +33,14 @@ export default function Support() {
         </h1>
 
         <p className="text-center text-gray-600 mb-12">
-          Have a question, suggestion, or issue? Fill out the form below and we'll get back to you as soon as possible.
+          Have a question, suggestion, or issue? 
+          <p> Fill out the form below and your mail client will open with the details ready to send to HelloBanglaTTS. </p>
         </p>
 
-        <form 
+        <form
           onSubmit={handleSubmit}
           className="bg-white shadow-md rounded-2xl p-8 space-y-6"
         >
-          {submitted && (
-            <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-center">
-              Thank you! Your message has been submitted.
-            </div>
-          )}
-
           <div className="flex flex-col">
             <label className="mb-2 font-medium">Name</label>
             <input

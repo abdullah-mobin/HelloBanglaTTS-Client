@@ -1,10 +1,25 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles, Menu, X, User, LogOut, Mail, Calendar, Play } from "lucide-react";
+import {
+  Sparkles,
+  Menu,
+  X,
+  User,
+  LogOut,
+  Mail,
+  Calendar,
+  Play,
+} from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import Brand from "./Brand";
 
-export default function Navbar({ }: { isModulePage: boolean }) {
+export default function Navbar({
+  isModulePage: _isModulePage,
+  sidebarWidth = 0,
+}: {
+  isModulePage: boolean;
+  sidebarWidth?: number;
+}) {
   const { isLoggedIn, userProfile, fetchUserProfile, logout } = useAuth();
   const [dark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,7 +34,7 @@ export default function Navbar({ }: { isModulePage: boolean }) {
   useEffect(() => {
     if (isLoggedIn && !userProfile && !profileFetchedRef.current) {
       profileFetchedRef.current = true;
-      fetchUserProfile().catch(err => console.error('Failed to fetch profile:', err));
+      fetchUserProfile().catch((err) => console.error("Failed to fetch profile:", err));
     }
   }, [isLoggedIn]);
 
@@ -44,63 +59,123 @@ export default function Navbar({ }: { isModulePage: boolean }) {
       await logout();
       setProfileMenuOpen(false);
     } catch (err) {
-      console.error('Logout failed:', err);
+      console.error("Logout failed:", err);
     }
   };
 
+  // Public nav links shown to logged-out users
+  const publicLinks = [
+    { to: "/", label: "Home" },
+    { to: "/pricing", label: "Pricing" },
+    { to: "/blog", label: "Blog" },
+    { to: "/about", label: "About" },
+    { to: "/career", label: "Career" },
+    { to: "/support", label: "Support" },
+  ];
+
   return (
-    <nav className={`fixed top-0 ${isLoggedIn ? 'md:left-64 left-0' : 'left-0'} right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-800`}>
-      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between relative">
-
-        {/* Mobile menu button */}
-        {isLoggedIn && (
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        )}
-
-        {/* LEFT: Logo */}
-        <div className="flex items-center gap-6">
-          {!isLoggedIn && <Brand size="sm" />}
-          {!isLoggedIn && (
-            <div className="hidden md:flex items-center gap-6 font-medium text-sm">
-              <Link to="/" className="hover:text-indigo-500">Home</Link>
-              <Link to="/pricing" className="hover:text-indigo-500">Pricing</Link>
-              <Link to="/blog" className="hover:text-indigo-500">Blog</Link>
-              <Link to="/about" className="hover:text-indigo-500">About</Link>
-              <Link to="/career" className="hover:text-indigo-500">Career</Link>
-              <Link to="/support" className="hover:text-indigo-500">Support</Link>
-            </div>
-          )}
+    <nav
+      style={{ left: `${sidebarWidth}rem` }}
+      className="fixed top-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-800 transition-[left] duration-300 ease-in-out"
+    >
+      <div className="max-w-7xl mx-auto pl-2 pr-6 py-3 grid grid-cols-[1fr_auto_1fr] items-center gap-6 relative">
+        {/* ============= LEFT ============= */}
+        <div className="flex items-center gap-4 justify-self-start min-w-0 relative z-10">
+          {/* Mobile menu trigger (logged in) */}
           {isLoggedIn && (
-            <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
-              <Link to="/" className="hover:text-indigo-500">Home</Link>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          )}
+
+          {/* Brand — hidden when the LeftPanel is showing the logo */}
+          {!isLoggedIn && (
+            <Link to="/" className="shrink-0">
+              <Brand size="sm" />
+            </Link>
+          )}
+
+          {/* Public links (desktop) */}
+          {!isLoggedIn && (
+            <div className="hidden xl:flex items-center gap-5 font-medium text-sm min-w-0">
+              {publicLinks.map(({ to, label }) => (
+                <Link key={to} to={to} className="hover:text-indigo-500 transition whitespace-nowrap">
+                  {label}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Compact links for mid-size screens */}
+          {!isLoggedIn && (
+            <div className="hidden md:flex xl:hidden items-center gap-3 font-medium text-sm min-w-0">
+              <Link to="/" className="hover:text-indigo-500 transition">Home</Link>
+              <Link to="/pricing" className="hover:text-indigo-500 transition">Pricing</Link>
+              <Link to="/blog" className="hover:text-indigo-500 transition">Blog</Link>
+              <Link to="/about" className="hover:text-indigo-500 transition">About</Link>
+              <Link to="/career" className="hover:text-indigo-500 transition">Career</Link>
+              <Link to="/support" className="hover:text-indigo-500 transition">Support</Link>
+            </div>
+          )}
+
+          {/* Logged-in compact home link (desktop) */}
+          {isLoggedIn && (
+            <div className="hidden md:flex items-center gap-4 text-sm font-medium">
+              <Link to="/" className="hover:text-indigo-500 transition">
+                Home
+              </Link>
+              <Link to="/pricing" className="hover:text-indigo-500 transition">
+                Pricing
+              </Link>
             </div>
           )}
         </div>
 
-        {/* 🔥 Center Upgrade / Try TTS Button */}
-        <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
-          <Link
-            to={isLoggedIn ? "/pricing" : "/modules/tts"}
-            className="relative inline-flex items-center gap-2 px-6 py-2 rounded-full
-                       bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
-                       text-white font-semibold shadow-lg
-                       hover:scale-105 transition-transform duration-300"
-          >
-            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-400 to-pink-500
-                             blur-md opacity-60 animate-pulse -z-10" />
+        {/* ============= CENTER ============= */}
+        <div className="flex items-center justify-center min-w-0 relative z-10 justify-self-center">
+          {/* Logged-out: a single "Try TTS Free" CTA */}
+          {!isLoggedIn && (
+            <Link
+              to="/modules/tts"
+              className="relative inline-flex items-center gap-2 px-6 py-2 rounded-full
+                         bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+                         text-white font-semibold shadow-lg
+                         hover:scale-105 transition-transform duration-300"
+            >
+              <span
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-400 to-pink-500
+                           blur-md opacity-60 animate-pulse -z-10"
+              />
+              <Play size={14} className="fill-white" />
+              Try TTS Free
+            </Link>
+          )}
 
-            {isLoggedIn ? <Sparkles size={16} /> : <Play size={14} className="fill-white" />}
-            {isLoggedIn ? "Upgrade to Pro" : "Try TTS Free"}
-          </Link>
+          {/* Logged-in: single Upgrade CTA */}
+          {isLoggedIn && (
+            <Link
+              to="/pricing"
+              className="relative inline-flex items-center gap-2 px-5 py-2 rounded-full
+                         bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+                         text-white font-semibold shadow-lg
+                         hover:scale-105 transition-transform duration-300"
+            >
+              <span
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-400 to-pink-500
+                           blur-md opacity-60 animate-pulse -z-10"
+              />
+              <Sparkles size={14} />
+              Upgrade to Pro
+            </Link>
+          )}
         </div>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-3">
+        {/* ============= RIGHT ============= */}
+        <div className="flex items-center gap-3 justify-self-end min-w-0 relative z-10">
           {isLoggedIn ? (
             <div className="relative" ref={profileMenuRef}>
               <button
@@ -111,7 +186,7 @@ export default function Navbar({ }: { isModulePage: boolean }) {
                   {userProfile?.name?.charAt(0).toUpperCase() || <User size={14} />}
                 </div>
                 <span className="hidden sm:inline text-sm font-medium">
-                  {userProfile?.name || 'User'}
+                  {userProfile?.name || "User"}
                 </span>
               </button>
 
@@ -192,29 +267,28 @@ export default function Navbar({ }: { isModulePage: boolean }) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* ============= MOBILE MENU ============= */}
       {isLoggedIn && mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200">
-          <div className="px-6 py-4 space-y-4">
-            <Link to="/" className="block hover:text-indigo-500">Home</Link>
-            <Link to="/pricing" className="block hover:text-indigo-500">Pricing</Link>
-            <Link to="/blog" className="block hover:text-indigo-500">Blog</Link>
-            <Link to="/about" className="block hover:text-indigo-500">About</Link>
-            <Link to="/career" className="block hover:text-indigo-500">Career</Link>
-            <Link to="/support" className="block hover:text-indigo-500">Support</Link>
-            <div className="border-t pt-4">
-              <Link to="/modules/tts" className="block hover:text-indigo-500">Text to Speech</Link>
-              {isLoggedIn && (
-                <>
-                  <Link to="/modules/video" className="block hover:text-indigo-500">Video Gen</Link>
-                  <Link to="/modules/image" className="block hover:text-indigo-500">Image Gen</Link>
-                  <Link to="/modules/story" className="block hover:text-indigo-500">Story Gen</Link>
-                  <Link to="/modules/accent" className="block hover:text-indigo-500">Accent Translate</Link>
-                  <Link to="/modules/smartify" className="block hover:text-indigo-500">Smartify Text</Link>
-                  <Link to="/modules/humanize" className="block hover:text-indigo-500">Humanizer</Link>
-                </>
-              )}
-            </div>
+          <div className="px-6 py-4 space-y-3">
+            <Link to="/" className="block hover:text-indigo-500">
+              Home
+            </Link>
+            <Link to="/pricing" className="block hover:text-indigo-500">
+              Pricing
+            </Link>
+            <Link to="/blog" className="block hover:text-indigo-500">
+              Blog
+            </Link>
+            <Link to="/about" className="block hover:text-indigo-500">
+              About
+            </Link>
+            <Link to="/career" className="block hover:text-indigo-500">
+              Career
+            </Link>
+            <Link to="/support" className="block hover:text-indigo-500">
+              Support
+            </Link>
           </div>
         </div>
       )}
