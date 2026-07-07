@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-// import { Moon, Sun, Sparkles, Menu, X, User, LogOut, Mail, Calendar } from "lucide-react";
-import { Sparkles, Menu, X, User, LogOut, Mail, Calendar } from "lucide-react";
+import { Sparkles, Menu, X, User, LogOut, Mail, Calendar, Play } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import Brand from "./Brand";
 
 export default function Navbar({ }: { isModulePage: boolean }) {
   const { isLoggedIn, userProfile, fetchUserProfile, logout } = useAuth();
-  // const [dark, setDark] = useState(false);
   const [dark] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -50,8 +49,8 @@ export default function Navbar({ }: { isModulePage: boolean }) {
   };
 
   return (
-    <nav className={`fixed top-0 ${isLoggedIn ? 'md:left-64 left-0' : 'left-0'} right-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800`}>
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative">
+    <nav className={`fixed top-0 ${isLoggedIn ? 'md:left-64 left-0' : 'left-0'} right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-gray-800`}>
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between relative">
 
         {/* Mobile menu button */}
         {isLoggedIn && (
@@ -63,58 +62,61 @@ export default function Navbar({ }: { isModulePage: boolean }) {
           </button>
         )}
 
-        {/* Left Links */}
-        <div className="hidden md:flex items-center gap-6 font-medium">
-          <Link to="/" className="hover:text-indigo-500">Home</Link>
-          <Link to="/pricing" className="hover:text-indigo-500">Pricing</Link>
-          <Link to="/blog" className="hover:text-indigo-500">Blog</Link>
-          <Link to="/about" className="hover:text-indigo-500">About</Link>
-          <Link to="/career" className="hover:text-indigo-500">Career</Link>
-          <Link to="/support" className="hover:text-indigo-500">Support</Link>
+        {/* LEFT: Logo */}
+        <div className="flex items-center gap-6">
+          {!isLoggedIn && <Brand size="sm" />}
+          {!isLoggedIn && (
+            <div className="hidden md:flex items-center gap-6 font-medium text-sm">
+              <Link to="/" className="hover:text-indigo-500">Home</Link>
+              <Link to="/pricing" className="hover:text-indigo-500">Pricing</Link>
+              <Link to="/blog" className="hover:text-indigo-500">Blog</Link>
+              <Link to="/about" className="hover:text-indigo-500">About</Link>
+              <Link to="/career" className="hover:text-indigo-500">Career</Link>
+              <Link to="/support" className="hover:text-indigo-500">Support</Link>
+            </div>
+          )}
+          {isLoggedIn && (
+            <div className="hidden md:flex items-center gap-2 text-xs text-gray-500">
+              <Link to="/" className="hover:text-indigo-500">Home</Link>
+            </div>
+          )}
         </div>
 
-        {/* 🔥 Center Upgrade Button */}
+        {/* 🔥 Center Upgrade / Try TTS Button */}
         <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
           <Link
-            to="/pricing"
+            to={isLoggedIn ? "/pricing" : "/modules/tts"}
             className="relative inline-flex items-center gap-2 px-6 py-2 rounded-full
                        bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
                        text-white font-semibold shadow-lg
                        hover:scale-105 transition-transform duration-300"
           >
-            {/* Glow Ring */}
             <span className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-400 to-pink-500
                              blur-md opacity-60 animate-pulse -z-10" />
 
-            <Sparkles size={16} />
-            Upgrade to Pro
+            {isLoggedIn ? <Sparkles size={16} /> : <Play size={14} className="fill-white" />}
+            {isLoggedIn ? "Upgrade to Pro" : "Try TTS Free"}
           </Link>
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-4">
-          {/* <button
-            onClick={() => setDark(!dark)}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-            aria-label="Toggle dark mode"
-          >
-            {dark ? <Sun size={18} /> : <Moon size={18} />}
-          </button> */}
-
+        <div className="flex items-center gap-3">
           {isLoggedIn ? (
             <div className="relative" ref={profileMenuRef}>
               <button
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition"
               >
-                <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-semibold">
-                  {userProfile?.name?.charAt(0).toUpperCase() || <User size={16} />}
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                  {userProfile?.name?.charAt(0).toUpperCase() || <User size={14} />}
                 </div>
-                <span className="hidden sm:inline text-sm">{userProfile?.name || 'User'}</span>
+                <span className="hidden sm:inline text-sm font-medium">
+                  {userProfile?.name || 'User'}
+                </span>
               </button>
 
               {profileMenuOpen && (
-                <div className="absolute right-0 mt-3 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden">
+                <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
                   {/* Profile Card Header */}
                   <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-8 text-white">
                     <div className="flex items-center gap-4">
@@ -132,7 +134,7 @@ export default function Navbar({ }: { isModulePage: boolean }) {
 
                   {/* Profile Info */}
                   <div className="px-6 py-4 space-y-4">
-                    <div className="flex items-center gap-3 pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
                       <Mail size={18} className="text-indigo-600" />
                       <div className="min-w-0">
                         <p className="text-xs text-gray-500">Email</p>
@@ -158,10 +160,10 @@ export default function Navbar({ }: { isModulePage: boolean }) {
                   </div>
 
                   {/* Logout Button */}
-                  <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="px-6 py-4 border-t border-gray-100">
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold transition"
+                      className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-xl font-semibold transition"
                     >
                       <LogOut size={16} />
                       Logout
@@ -174,14 +176,14 @@ export default function Navbar({ }: { isModulePage: boolean }) {
             <>
               <Link
                 to="/login"
-                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700"
+                className="px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-sm font-semibold transition"
               >
                 Login
               </Link>
 
               <Link
                 to="/signup"
-                className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+                className="px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 text-sm font-semibold transition shadow-lg shadow-indigo-200"
               >
                 Sign Up
               </Link>
@@ -192,7 +194,7 @@ export default function Navbar({ }: { isModulePage: boolean }) {
 
       {/* Mobile Menu */}
       {isLoggedIn && mobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+        <div className="md:hidden bg-white border-t border-gray-200">
           <div className="px-6 py-4 space-y-4">
             <Link to="/" className="block hover:text-indigo-500">Home</Link>
             <Link to="/pricing" className="block hover:text-indigo-500">Pricing</Link>

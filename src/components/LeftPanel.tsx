@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { Link } from "react-router-dom";
 import {
   Mic,
   Video,
@@ -9,6 +8,7 @@ import {
   Sparkles,
   UserCheck,
 } from "lucide-react";
+import Brand from "./Brand";
 
 const items = [
   { to: "/modules/tts", label: "Text to Speech", icon: Mic, always: true },
@@ -24,29 +24,22 @@ export default function LeftPanel({ isLoggedIn }: { isLoggedIn: boolean }) {
   const visibleItems = items.filter(item => item.always || isLoggedIn);
 
   return (
-    <aside className="hidden md:fixed md:left-0 md:top-0 md:w-64 md:h-screen bg-white dark:bg-gray-900 border-r p-4 md:flex md:flex-col">
+    <aside className="hidden md:fixed md:left-0 md:top-0 md:w-64 md:h-screen bg-white dark:bg-gray-900 border-r border-gray-200 p-5 md:flex md:flex-col">
       {/* Logo */}
-      <div>
-        <Link
-          to="/"
-          className="text-2xl font-bold text-indigo-600 dark:text-indigo-400"
-        >
-          HelloBanglaTTS
-        </Link>
-      </div>
+      <Brand size="sm" />
 
       {/* Navigation */}
-      <nav className="flex flex-col gap-5 mt-10 overflow-y-auto">
+      <nav className="flex flex-col gap-1 mt-10 overflow-y-auto">
         {visibleItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-lg transition
+              `flex items-center gap-3 px-4 py-3 rounded-xl transition font-medium text-sm
                ${
                  isActive
-                   ? "bg-indigo-600 text-white"
-                   : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                   ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-200"
+                   : "text-gray-600 hover:bg-gray-100"
                }`
             }
           >
