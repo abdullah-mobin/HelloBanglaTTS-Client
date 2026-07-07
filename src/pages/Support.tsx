@@ -2,7 +2,7 @@
 
 import Footer from '../components/Footer';
 import { useState } from 'react';
-import { openMailClient, CONTACT_EMAIL } from '../services/mailService';
+import { openMailClient } from '../services/mailService';
 
 export default function Support() {
   const [name, setName] = useState('');

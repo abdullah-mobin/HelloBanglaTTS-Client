@@ -14,7 +14,6 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
   const gainRef = useRef<GainNode | null>(null);
   const bassRef = useRef<BiquadFilterNode | null>(null);
   const trebleRef = useRef<BiquadFilterNode | null>(null);
-  const pitchRef = useRef<number>(0);
 
   const [playing, setPlaying] = useState(false);
 
@@ -32,11 +31,13 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
   const enabled = Boolean(audioUrl);
 
   /* ---------- INIT AUDIO GRAPH ---------- */
+  // Re-runs when `enabled` flips on so the audio element is guaranteed mounted.
   useEffect(() => {
-    if (!audioRef.current || ctxRef.current) return;
+    if (!enabled || !audioRef.current || ctxRef.current) return;
 
+    const audioEl = audioRef.current;
     const ctx = new AudioContext();
-    const source = ctx.createMediaElementSource(audioRef.current);
+    const source = ctx.createMediaElementSource(audioEl);
 
     const bassFilter = ctx.createBiquadFilter();
     bassFilter.type = "lowshelf";
@@ -59,7 +60,24 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
     bassRef.current = bassFilter;
     trebleRef.current = trebleFilter;
     gainRef.current = gain;
-  }, []);
+
+    return () => {
+      try {
+        source.disconnect();
+        bassFilter.disconnect();
+        trebleFilter.disconnect();
+        gain.disconnect();
+      } catch {
+        /* nodes already detached */
+      }
+      ctx.close().catch(() => {});
+      ctxRef.current = null;
+      sourceRef.current = null;
+      bassRef.current = null;
+      trebleRef.current = null;
+      gainRef.current = null;
+    };
+  }, [enabled]);
 
   /* ---------- RESET ON NEW AUDIO ---------- */
   useEffect(() => {
@@ -84,11 +102,14 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
     if (trebleRef.current) trebleRef.current.gain.value = treble;
   }, [treble]);
 
+  // Combine speed and pitch into playbackRate so the pitch slider is audible.
+  // Cents → ratio: 2^(cents/1200). preservesPitch=false means pitch shifts
+  // alongside rate (vinyl-style); for true independent pitch shifting a
+  // library like soundtouchjs is required.
   useEffect(() => {
     if (!audioRef.current) return;
-    audioRef.current.playbackRate = speed;
+    audioRef.current.playbackRate = speed * Math.pow(2, pitch / 1200);
     audioRef.current.preservesPitch = false;
-    pitchRef.current = pitch;
   }, [speed, pitch]);
 
   /* ---------- TIMELINE ---------- */
@@ -115,12 +136,18 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
       await ctxRef.current.resume();
     }
 
-    if (playing) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    try {
+      if (playing) {
+        audioRef.current.pause();
+        setPlaying(false);
+      } else {
+        await audioRef.current.play();
+        setPlaying(true);
+      }
+    } catch (err) {
+      console.error("Playback failed:", err);
+      setPlaying(false);
     }
-    setPlaying(!playing);
   };
 
   const seek = (v: number) => {
@@ -210,7 +237,7 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
           />
         </Control>
 
-        <Control label="Speed">
+        <Control label="Pitch">
           <input
             type="range"
             min="0.7"
@@ -222,7 +249,7 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
           />
         </Control>
 
-        <Control label="Pitch">
+        {/* <Control label="Pitch (cents)">
           <input
             type="range"
             min="-600"
@@ -232,7 +259,7 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
             disabled={!enabled}
             onChange={(e) => setPitch(Number(e.target.value))}
           />
-        </Control>
+        </Control> */}
 
         <Control label="Bass">
           <input
@@ -259,7 +286,8 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
         </Control>
       </div>
 
-      {audioUrl && <audio ref={audioRef} src={audioUrl} />}
+      {/* Always-mounted so the ref is available when the Web Audio graph initializes. */}
+      <audio ref={audioRef} src={audioUrl ?? undefined} className="hidden" />
     </div>
   );
 }

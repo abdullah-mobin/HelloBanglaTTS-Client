@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Footer from "../components/Footer";
 import { Calendar, Clock, User, BookOpen } from "lucide-react";
 
@@ -252,8 +252,8 @@ const blogPosts: BlogPost[] = [
     category: "Engineering",
     author: "Sadia Rahman",
     date: "2026-03-22",
-    reverImage: "/blog/audio-engineering-for-llms.svg",
-    coadMinutes: 7,
+    coverImage: "/blog/audio-engineering-for-llms.svg",
+    readMinutes: 7,
     cover: "from-fuchsia-500 via-purple-500 to-indigo-500",
     content: [
       {
@@ -292,8 +292,8 @@ const blogPosts: BlogPost[] = [
     category: "Product",
     author: "Nusrat Jahan",
     date: "2026-03-05",
-    reverImage: "/blog/building-a-bangla-creator-platform.svg",
-    coadMinutes: 5,
+    coverImage: "/blog/building-a-bangla-creator-platform.svg",
+    readMinutes: 5,
     cover: "from-orange-500 via-rose-500 to-pink-500",
     content: [
       {
