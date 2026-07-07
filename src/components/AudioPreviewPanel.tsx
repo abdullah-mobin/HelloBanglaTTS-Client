@@ -20,7 +20,7 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
   // Controls
   const [volume, setVolume] = useState(1);
   const [speed, setSpeed] = useState(1);
-  const [pitch, setPitch] = useState(0); // cents
+  // const [pitch, setPitch] = useState(0); // cents
   const [bass, setBass] = useState(0);
   const [treble, setTreble] = useState(0);
 
@@ -106,11 +106,11 @@ export default function AudioPreviewPanel({ audioUrl }: Props) {
   // Cents → ratio: 2^(cents/1200). preservesPitch=false means pitch shifts
   // alongside rate (vinyl-style); for true independent pitch shifting a
   // library like soundtouchjs is required.
-  useEffect(() => {
-    if (!audioRef.current) return;
-    audioRef.current.playbackRate = speed * Math.pow(2, pitch / 1200);
-    audioRef.current.preservesPitch = false;
-  }, [speed, pitch]);
+  // useEffect(() => {
+  //   if (!audioRef.current) return;
+  //   audioRef.current.playbackRate = speed * Math.pow(2, pitch / 1200);
+  //   audioRef.current.preservesPitch = false;
+  // }, [speed, pitch]);
 
   /* ---------- TIMELINE ---------- */
   useEffect(() => {
