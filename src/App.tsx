@@ -8,6 +8,9 @@ import Pricing from "./pages/Pricing";
 import Careers from "./pages/Career";
 import Blog from "./pages/Blog";
 import Support from "./pages/Support";
+import ApiDocs from "./pages/ApiDocs";
+import HowItWorks from "./pages/HowItWorks";
+import UserManual from "./pages/UserManual";
 
 import LeftPanel, {
   LEFT_PANEL_WIDTH_COLLAPSED,
@@ -80,6 +83,9 @@ function AppContent() {
             <Route path="/career" element={<Careers />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/support" element={<Support />} />
+            <Route path="/api-docs" element={<ApiDocs />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/user-manual" element={<UserManual />} />
 
             <Route path="/modules/tts" element={<TextToSpeech />} />
             <Route path="/modules/video" element={isLoggedIn ? <VideoGen /> : <Navigate to="/" />} />

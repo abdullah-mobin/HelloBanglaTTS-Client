@@ -9,6 +9,8 @@ import {
   UserCheck,
   ChevronsLeft,
   ChevronsRight,
+  Code2,
+  Workflow,
 } from "lucide-react";
 import Brand from "./Brand";
 import { useEffect, useState } from "react";
@@ -25,6 +27,9 @@ const items = [
   { to: "/modules/accent", label: "Quick Translate", icon: Languages, always: false },
   { to: "/modules/smartify", label: "Smartify Text", icon: Sparkles, always: false },
   { to: "/modules/humanize", label: "AI Humanizer", icon: UserCheck, always: false },
+  { to: "/api-docs", label: "API Docs", icon: Code2, always: true },
+  { to: "/how-it-works", label: "How It Works", icon: Workflow, always: true },
+  { to: "/user-manual", label: "User Manual", icon: BookOpen, always: true },
 ];
 
 interface LeftPanelProps {
